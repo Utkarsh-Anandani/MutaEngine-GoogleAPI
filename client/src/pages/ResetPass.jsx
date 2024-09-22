@@ -13,7 +13,7 @@ const ResetPass = () => {
 
     const resetPassword = async (e) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:3000/reset-password/${email}`, {
+        const response = await fetch(`https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/reset-password/${email}`, {
             method: 'PUT',
             body: JSON.stringify({ password: newPass, otp: OTP }),
             headers: { 'Content-Type': 'application/json' }
