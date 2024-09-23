@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({credentials: true, origin: 'https://muta-engine-frontend.vercel.app/'}));
+app.use(cors({credentials: true, origin: 'https://muta-engine-frontend.vercel.app'}));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
