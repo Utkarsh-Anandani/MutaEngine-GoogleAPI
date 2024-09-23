@@ -12,7 +12,7 @@ const HomePage = () => {
   }
 
   const jwtToken = getCookie('token');
-  console.log('JWT Token:', jwtToken);
+  console.log('JWT Token:', jwtToken, document.cookie);
 
   return (
     <main className='max-w-[100vw] min-h-[100vh]'>
