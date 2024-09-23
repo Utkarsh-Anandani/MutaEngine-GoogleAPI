@@ -8,7 +8,7 @@ const ForgotPass = () => {
 
     const sendOTP = async (e) => {
         e.preventDefault();
-        const response = await fetch('https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/forgot-password', {
+        const response = await fetch('https://muta-engine-google-api-backend.vercel.app/forgot-password', {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }

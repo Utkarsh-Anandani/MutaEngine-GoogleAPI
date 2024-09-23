@@ -13,7 +13,7 @@ const Signup = () => {
 
   const signup = async (e) => {
     e.preventDefault();
-    const response = await fetch('https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/signup', {
+    const response = await fetch('https://muta-engine-google-api-backend.vercel.app/signup', {
       method: 'POST',
       body: JSON.stringify({ username, email, password }),
       headers: { 'Content-Type': 'application/json' }

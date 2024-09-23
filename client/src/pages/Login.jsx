@@ -12,7 +12,7 @@ const Login = () => {
 
   const login = async (e) => {
     e.preventDefault();
-    const response = await fetch('https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/login', {
+    const response = await fetch('https://muta-engine-google-api-backend.vercel.app/login', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({ email, password }),

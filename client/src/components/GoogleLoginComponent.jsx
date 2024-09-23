@@ -4,8 +4,9 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 const GoogleLoginComponent = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
-      const res = await fetch('https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/google-login', {
+      const res = await fetch('https://muta-engine-google-api-backend.vercel.app/google-login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

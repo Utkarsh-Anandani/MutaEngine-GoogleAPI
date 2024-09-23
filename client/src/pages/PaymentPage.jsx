@@ -23,7 +23,7 @@ const PaymentButton = () => {
       return;
     }
 
-    const result = await fetch('http://localhost:3000/create-order', {
+    const result = await fetch('https://muta-engine-google-api-backend.vercel.app/create-order', {
       method: 'POST',
       body: JSON.stringify({ amount: 2400, currency: 'INR' }),
       headers: {
@@ -52,7 +52,7 @@ const PaymentButton = () => {
           razorpaySignature: response.razorpay_signature,
         };
 
-        const verifyRes = await fetch('http://localhost:3000/verify-payment', {
+        const verifyRes = await fetch('https://muta-engine-google-api-backend.vercel.app/verify-payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
