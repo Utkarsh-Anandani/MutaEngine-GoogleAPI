@@ -14,11 +14,23 @@ const { verifyCaptcha } = require('./middlewares/verifyCaptcha');
 const { OAuth2Client } = require('google-auth-library');
 
 dotenv.config();
+const allowedOrigins = ['https://muta-engine-frontend.vercel.app', 'http://localhost:5173', 'https://muta-engine-frontend.vercel.app/', 'http://localhost:5173/'];
+const corsOptions = {
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+};
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'https://muta-engine-frontend.vercel.app' }));
+app.use(cors(corsOptions));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
@@ -181,6 +193,8 @@ app.put('/reset-password/:email', async (req, res) => {
     }
 })
 
+
+// Google login API
 app.post('/google-login', async (req, res) => {
     const { token } = req.body;
 
@@ -221,6 +235,7 @@ app.post('/google-login', async (req, res) => {
 });
 
 
+// Placing order using Razorpay payment gateway
 app.post('/create-order', async (req, res) => {
     const { amount, currency } = req.body;
   
@@ -238,6 +253,8 @@ app.post('/create-order', async (req, res) => {
     }
 });
 
+
+// Verifying Payment API before invoice generation
 app.post('/verify-payment', (req, res) => {
     const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
   
