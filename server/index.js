@@ -14,23 +14,11 @@ const { verifyCaptcha } = require('./middlewares/verifyCaptcha');
 const { OAuth2Client } = require('google-auth-library');
 
 dotenv.config();
-const allowedOrigins = ['https://muta-engine-frontend.vercel.app', 'http://localhost:5173', 'https://muta-engine-frontend.vercel.app/', 'http://localhost:5173/'];
-const corsOptions = {
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-};
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors({credentials: true, origin: 'https://muta-engine-frontend.vercel.app/'}));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
