@@ -55,7 +55,7 @@ const Signup = () => {
           sitekey='6Lc0m0sqAAAAAKvaAWqZBUAiNtulJg2GGla50FAm'
           onChange={(val) => setcaptcha(val)}
           />
-          <button disabled={!captcha} className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Signup</button>
+          <button className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Signup</button>
         </form>
         <div className='text-black text-md font-semibold'>
           Already have an Account? <Link to={'/login'} className='text-sky-500 underline'>Login</Link>
