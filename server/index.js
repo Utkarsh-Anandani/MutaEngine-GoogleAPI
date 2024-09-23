@@ -25,7 +25,7 @@ const salt = bcrypt.genSaltSync(10);
 const googleClient = new OAuth2Client("690137169343-ags8105pdld6tpdstq6mg278tmh880jd.apps.googleusercontent.com");
 
 const cookieSpecs = {
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'None',
     domain: 'https://muta-engine-frontend.vercel.app',
