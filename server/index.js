@@ -24,6 +24,14 @@ const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
 const googleClient = new OAuth2Client("690137169343-ags8105pdld6tpdstq6mg278tmh880jd.apps.googleusercontent.com");
 
+const cookieSpecs = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    domain: 'https://muta-engine-frontend.vercel.app',
+    maxAge: 24 * 60 * 60 * 1000 
+};
+
 const razorpay = new Razorpay({
     key_id: process.env.PAYMENT_KEY_ID,
     key_secret: process.env.PAYMENT_KEY_SECRET,
@@ -65,7 +73,7 @@ app.post('/signup', verifyCaptcha, async (req, res) => {
         })
 
         const token = generateToken(user);
-        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' });
+        res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' });
     } catch (error) {
         res.status(500).json({ 'message': error.message });
     } finally {
@@ -97,7 +105,7 @@ app.post('/login', async (req, res) => {
             if (!isValid) return res.status(400).json({ 'message': 'Invalid password' });
 
             const token = generateToken(user);
-            res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
+            res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' })
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message })
@@ -207,7 +215,7 @@ app.post('/google-login', async (req, res) => {
         }
 
         const token = generateToken(user);
-        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
+        res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' })
 
         res.json({
             token,
