@@ -4,6 +4,7 @@ import Signup from "./pages/Signup"
 import HomePage from "./pages/HomePage"
 import ForgotPass from "./pages/ForgotPass"
 import ResetPass from "./pages/ResetPass"
+import PaymentButton from "./pages/PaymentPage"
 
 function App() {
 
@@ -27,6 +28,10 @@ function App() {
 
       <Route path={'/reset-password/:email'} element={
         <ResetPass />
+      } />
+
+      <Route path={'/payment'} element={
+        <PaymentButton />
       } />
     </Routes>
   )

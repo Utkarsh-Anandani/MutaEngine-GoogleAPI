@@ -1,4 +1,5 @@
 import React from 'react'
+import PaymentButton from '../pages/PaymentPage'
 
 const Course = ({name}) => {
   return (
@@ -9,7 +10,7 @@ const Course = ({name}) => {
             <div className='text-xl font-semibold'>{name}</div>
             <div>&#8377; 2400</div>
         </div>
-        <div className='bg-sky-500 rounded-lg px-2 py-1 text-white font-semibold text-sm cursor-pointer'>Buy Now</div>
+        <div><PaymentButton /></div>
       </div>
     </div>
   )

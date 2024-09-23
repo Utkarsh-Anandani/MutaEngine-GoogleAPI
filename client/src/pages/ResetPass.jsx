@@ -33,7 +33,7 @@ const ResetPass = () => {
 
     return (
         <main className='w-screen h-screen flex justify-center items-center'>
-            <div className='bg-white w-[30vw] h-[50vh] rounded-3xl shadow-xl flex flex-col items-center gap-14 py-10'>
+            <div className='bg-white w-[30vw] h-[55vh] rounded-3xl shadow-xl flex flex-col items-center gap-14 py-10'>
                 <h1 className='text-4xl text-sky-500 font-bold'>Forgot Password</h1>
                 <form className='flex flex-col gap-5' onSubmit={resetPassword}>
                     <input className='border-black border-2 rounded-md w-[20vw] px-2 py-1' value={OTP} type="number" name='otp' placeholder='Enter OTP (6 digits)' onChange={
@@ -46,7 +46,7 @@ const ResetPass = () => {
                             setNewPass(e.target.value);
                         }
                     } />
-                    <button className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Send OTP</button>
+                    <button className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Set new Password</button>
                 </form>
                 <div className='text-black text-md font-semibold'>
                     Didn't got OTP? <Link to={'/forgot-password'} className='text-sky-500 underline'>Resend</Link>

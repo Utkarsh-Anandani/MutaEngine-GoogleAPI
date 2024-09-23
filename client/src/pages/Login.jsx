@@ -14,6 +14,7 @@ const Login = () => {
     e.preventDefault();
     const response = await fetch('https://muta-engine-google-api-backend-4pvxsmryo.vercel.app/login', {
       method: 'POST',
+      credentials: 'include',
       body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' }
     })
@@ -32,20 +33,24 @@ const Login = () => {
 
   return (
     <main className='w-screen h-screen flex justify-center items-center'>
-      <div className='bg-white w-[30vw] h-[70vh] rounded-3xl shadow-xl flex flex-col items-center gap-10 py-10'>
-        <h1 className='text-4xl text-sky-500 font-bold mb-4'>Login to your Account</h1>
+      <div className='bg-white w-[30vw] h-[70vh] rounded-3xl shadow-xl flex flex-col items-center gap-6 py-10'>
+        <h1 className='text-4xl text-sky-500 font-bold mb-6'>Login to your Account</h1>
         <form className='flex flex-col gap-5' onSubmit={login}>
           <input autoComplete='true' className='border-black border-2 rounded-md w-[20vw] px-2 py-1' value={email} type="email" name='email' placeholder='E-Mail' onChange={
             (e) => {
               setemail(e.target.value);
             }
-          }/>
+          } />
           <input autoComplete='true' className='border-black border-2 rounded-md w-[20vw] px-2 py-1' value={password} type="password" name='pass' placeholder='Password' onChange={
             (e) => {
               setpassword(e.target.value);
             }
-          }/>
-          <button className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Login</button>
+          } />
+
+          <div className='flex flex-col justify-end w-full gap-2'>
+            <button className='bg-sky-500 text-white font-semibold text-lg rounded-lg w-[20vw] py-2' type="submit">Login</button>
+            <Link className='text-blue-600 text-sm underline text-right font-semibold' to={'/forgot-password'}>forgot password</Link>
+          </div>
         </form>
         <div className='flex flex-col gap-2 font-semibold items-center'>
           <p>or</p>

@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const { generateToken } = require('./utils/jwt')
+const { generateToken } = require('./utils/jwt');
 const bcrypt = require('bcryptjs');
 const { signupSchema, loginSchema } = require('./utils/zod');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const { verifyCaptcha } = require('./middlewares/verifyCaptcha');
@@ -16,11 +18,16 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'https://muta-engine-frontend.vercel.app/' }));
+app.use(cors({ credentials: true, origin: 'https://muta-engine-frontend.vercel.app' }));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
 const googleClient = new OAuth2Client("690137169343-ags8105pdld6tpdstq6mg278tmh880jd.apps.googleusercontent.com");
+
+const razorpay = new Razorpay({
+    key_id: process.env.PAYMENT_KEY_ID,
+    key_secret: process.env.PAYMENT_KEY_SECRET,
+});
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -212,6 +219,41 @@ app.post('/google-login', async (req, res) => {
         res.status(500).json({ error: "Error logging in with Google" });
     }
 });
+
+
+app.post('/create-order', async (req, res) => {
+    const { amount, currency } = req.body;
+  
+    const options = {
+      amount: amount * 100,
+      currency: currency || 'INR',
+      receipt: `receipt_${Date.now()}`,
+    };
+  
+    try {
+      const order = await razorpay.orders.create(options);
+      res.json({ orderId: order.id });
+    } catch (error) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
+app.post('/verify-payment', (req, res) => {
+    const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
+  
+    const secret = process.env.PAYMENT_KEY_SECRET;
+    const shasum = crypto.createHmac('sha256', secret);
+  
+    shasum.update(razorpayOrderId + '|' + razorpayPaymentId);
+    const digest = shasum.digest('hex');
+  
+    if (digest === razorpaySignature) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
+    }
+  });
+  
 
 
 app.listen(port, () => {
