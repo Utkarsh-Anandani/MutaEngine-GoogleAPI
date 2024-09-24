@@ -98,7 +98,12 @@ app.post('/login', async (req, res) => {
 
             const token = generateToken(user);
             console.log(token);
-            res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
+            res.status(201).cookie('token', token, {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === 'production',  // true for HTTPS
+                sameSite: 'None',  // Required for cross-origin requests
+                maxAge: 24 * 60 * 60 * 1000,  // 1 day
+              }).json({ 'message': 'Token Generated' })
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message })
