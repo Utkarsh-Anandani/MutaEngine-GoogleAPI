@@ -220,7 +220,7 @@ app.post('/google-login', async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: "Error logging in with Google" });
+        res.status(500).json({ 'error' : error.message });
     }
 });
 
