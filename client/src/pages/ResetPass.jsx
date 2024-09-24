@@ -15,6 +15,7 @@ const ResetPass = () => {
         e.preventDefault();
         const response = await fetch(`https://muta-engine-google-api-backend.vercel.app/reset-password/${email}`, {
             method: 'PUT',
+            credentials: 'include',
             body: JSON.stringify({ password: newPass, otp: OTP }),
             headers: { 'Content-Type': 'application/json' }
         })

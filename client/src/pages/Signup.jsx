@@ -15,6 +15,7 @@ const Signup = () => {
     e.preventDefault();
     const response = await fetch('https://muta-engine-google-api-backend.vercel.app/signup', {
       method: 'POST',
+      credentials: 'include',
       body: JSON.stringify({ username, email, password }),
       headers: { 'Content-Type': 'application/json' }
     })

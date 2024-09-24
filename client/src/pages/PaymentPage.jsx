@@ -25,6 +25,7 @@ const PaymentButton = () => {
 
     const result = await fetch('https://muta-engine-google-api-backend.vercel.app/create-order', {
       method: 'POST',
+      credentials: 'include',
       body: JSON.stringify({ amount: 2400, currency: 'INR' }),
       headers: {
         'Content-Type': 'application/json',
@@ -54,6 +55,7 @@ const PaymentButton = () => {
 
         const verifyRes = await fetch('https://muta-engine-google-api-backend.vercel.app/verify-payment', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },

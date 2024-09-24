@@ -10,6 +10,7 @@ const ForgotPass = () => {
         e.preventDefault();
         const response = await fetch('https://muta-engine-google-api-backend.vercel.app/forgot-password', {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }
         })
