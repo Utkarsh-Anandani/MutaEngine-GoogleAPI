@@ -103,7 +103,8 @@ app.post('/login', async (req, res) => {
             console.log(token);
             res.status(201).cookie('token', token).json({
                 'message': 'Token Generated',
-                'token': token
+                'token': token,
+                'name': user.username
             })
         }
     } catch (error) {
@@ -210,7 +211,7 @@ app.post('/google-login', async (req, res) => {
                 googleId: sub,
                 username: name,
                 email: email,
-                password: await bcrypt.hash('defaultPassword', 10) // Default password
+                password: await bcrypt.hash('defaultPassword', 10)
             });
         } else {
             res.status(400).json({'message' : 'Email already exists'})
@@ -219,7 +220,8 @@ app.post('/google-login', async (req, res) => {
         const JWTtoken = generateToken(user);
         res.status(201).cookie('token', token).json({ 
             'message': 'Token Generated' ,
-            'token' : JWTtoken
+            'token' : JWTtoken,
+            'name' : name
         });
 
     } catch (error) {

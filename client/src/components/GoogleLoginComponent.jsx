@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { Navigate } from "react-router-dom";
 
-const GoogleLoginComponent = ({setToken}) => {
+const GoogleLoginComponent = ({setToken, setUserDetails}) => {
 
   const [redirect, setredirect] = useState(false);
 
@@ -21,6 +21,7 @@ const GoogleLoginComponent = ({setToken}) => {
 
       if (res.ok) {
         setToken(data.token);
+        setUserDetails(data.name);
         console.log("User saved to MongoDB:", data.message);
         setredirect(true);
       } else {

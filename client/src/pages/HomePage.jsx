@@ -2,12 +2,12 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import CourseList from '../components/CourseList'
 
-const HomePage = ({token}) => {
+const HomePage = ({token, userDetails}) => {
   const jwtToken = token
 
   return (
     <main className='max-w-[100vw] min-h-[100vh]'>
-      <Navbar />
+      <Navbar token={token} userDetails={userDetails}/>
       {jwtToken ? <div>
         <div className='max-w-[100vw] pl-16 py-10'>
           <h1 className='text-black text-4xl font-bold mb-6'>List of Couses offered in 2024</h1>

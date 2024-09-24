@@ -8,19 +8,20 @@ import { useState } from "react"
 
 function App() {
   const [token, setToken] = useState('');
+  const [userDetails, setUserDetails] = useState('');
 
   return (
     <Routes>
       <Route path={'/login'} element={
-        <Login setToken={setToken}/>
+        <Login setToken={setToken} setUserDetails={setUserDetails}/>
       } />
 
       <Route path={'/signup'} element={
-        <Signup setToken={setToken}/>
+        <Signup setToken={setToken} setUserDetails={setUserDetails}/>
       } />
 
       <Route index element={
-        <HomePage token={token}/>
+        <HomePage token={token} userDetails={userDetails}/>
       } />
 
       <Route path={'/forgot-password'} element={

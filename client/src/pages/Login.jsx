@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import GoogleLoginComponent from '../components/GoogleLoginComponent';
 
-const Login = ({setToken}) => {
+const Login = ({setToken, setUserDetails}) => {
 
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
@@ -21,6 +21,7 @@ const Login = ({setToken}) => {
     if (response.status === 200 || response.status === 201) {
       const res = await response.json();
       setToken(res.token);
+      setUserDetails(res.name);
       alert('Logged in Successfully')
       setredirect(true);
     }
@@ -56,7 +57,7 @@ const Login = ({setToken}) => {
         </form>
         <div className='flex flex-col gap-2 font-semibold items-center'>
           <p>or</p>
-          <GoogleLoginComponent setToken={setToken}/>
+          <GoogleLoginComponent setToken={setToken} setUserDetails={setUserDetails}/>
         </div>
         <div className='text-black text-md font-semibold'>
           Don't have an Account? <Link to={'/signup'} className='text-sky-500 underline'>SignUp</Link>

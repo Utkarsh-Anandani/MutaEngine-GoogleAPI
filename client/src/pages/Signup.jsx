@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { ReCAPTCHA } from 'react-google-recaptcha';
 
-const Signup = ({setToken}) => {
+const Signup = ({setToken, setUserDetails}) => {
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
   const [email, setemail] = useState('');
@@ -22,6 +22,7 @@ const Signup = ({setToken}) => {
     if (response.status === 200 || response.status === 201) {
       const res = await response.json();
       setToken(res.token);
+      setUserDetails(username)
       alert('Registeration Successful')
       setredirect(true);
     }
