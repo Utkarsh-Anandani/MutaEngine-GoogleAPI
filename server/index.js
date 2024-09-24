@@ -14,23 +14,16 @@ const { verifyCaptcha } = require('./middlewares/verifyCaptcha');
 const { OAuth2Client } = require('google-auth-library');
 
 dotenv.config();
+const allowedOrigins = ['https://muta-engine-frontend.vercel.app', 'http://localhost:5173']
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({credentials: true, origin: 'https://muta-engine-frontend.vercel.app'}));
+app.use(cors({credentials: true, origin: allowedOrigins}));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
 const googleClient = new OAuth2Client("690137169343-ags8105pdld6tpdstq6mg278tmh880jd.apps.googleusercontent.com");
-
-const cookieSpecs = {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'None',
-    domain: 'https://muta-engine-frontend.vercel.app',
-    maxAge: 24 * 60 * 60 * 1000 
-};
 
 const razorpay = new Razorpay({
     key_id: process.env.PAYMENT_KEY_ID,
@@ -73,7 +66,7 @@ app.post('/signup', verifyCaptcha, async (req, res) => {
         })
 
         const token = generateToken(user);
-        res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' });
+        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' });
     } catch (error) {
         res.status(500).json({ 'message': error.message });
     } finally {
@@ -99,13 +92,13 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ 'message': 'Invalid email' });
         }
         else {
-            console.log(user);
 
             const isValid = bcrypt.compareSync(password, user.password);
             if (!isValid) return res.status(400).json({ 'message': 'Invalid password' });
 
             const token = generateToken(user);
-            res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' })
+            console.log(token);
+            res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message })
@@ -215,7 +208,7 @@ app.post('/google-login', async (req, res) => {
         }
 
         const token = generateToken(user);
-        res.status(201).cookie('token', token, cookieSpecs).json({ 'message': 'Token Generated' })
+        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
 
         res.json({
             token,

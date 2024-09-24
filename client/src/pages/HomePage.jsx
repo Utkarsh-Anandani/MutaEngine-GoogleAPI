@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import CourseList from '../components/CourseList'
+import { useEffect } from 'react'
 
 const HomePage = () => {
 
@@ -13,6 +14,13 @@ const HomePage = () => {
 
   const jwtToken = getCookie('token');
   console.log('JWT Token:', jwtToken, document.cookie);
+
+  useEffect(() => {
+    async function verifyToken(token) {
+      
+    }
+  }, [])
+  
 
   return (
     <main className='max-w-[100vw] min-h-[100vh]'>
