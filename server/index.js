@@ -204,7 +204,7 @@ app.post('/google-login', async (req, res) => {
         const { sub, name, email } = ticket.getPayload();
 
         let user = await User.findOne({ googleId: sub });
-        let emailUser = await User.findOne({email: email});
+        let emailUser = await User.findOne({ email: email });
 
         if (!user && !emailUser) {
             user = await User.create({
@@ -214,18 +214,27 @@ app.post('/google-login', async (req, res) => {
                 password: await bcrypt.hash('defaultPassword', 10)
             });
         } else {
-            res.status(400).json({'message' : 'Email already exists'})
+            if (user) {
+                const JWTtoken = generateToken(user);
+                res.status(201).cookie('token', token).json({
+                    'message': 'Token Generated',
+                    'token': JWTtoken,
+                    'name': name
+                });
+            } else {
+                res.status(400).json({ 'message': 'Email already exists' });
+            }
         }
 
         const JWTtoken = generateToken(user);
-        res.status(201).cookie('token', token).json({ 
-            'message': 'Token Generated' ,
-            'token' : JWTtoken,
-            'name' : name
+        res.status(201).cookie('token', token).json({
+            'message': 'Token Generated',
+            'token': JWTtoken,
+            'name': name
         });
 
     } catch (error) {
-        res.status(500).json({ 'error' : error.message });
+        res.status(500).json({ 'error': error.message });
     }
 });
 
