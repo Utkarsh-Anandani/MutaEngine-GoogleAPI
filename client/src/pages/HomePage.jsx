@@ -1,26 +1,9 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import CourseList from '../components/CourseList'
-import { useEffect } from 'react'
 
-const HomePage = () => {
-
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    console.log(value, parts)
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
-  const jwtToken = getCookie('token');
-  console.log('JWT Token:', jwtToken, document.cookie);
-
-  useEffect(() => {
-    async function verifyToken(token) {
-      
-    }
-  }, [])
-  
+const HomePage = ({token}) => {
+  const jwtToken = token
 
   return (
     <main className='max-w-[100vw] min-h-[100vh]'>
@@ -32,7 +15,7 @@ const HomePage = () => {
         </div>
       </div> : 
       <div className='text-5xl text-black text-center font-bold mt-8'>
-        Login to see the course List
+        Login to see the full course List
       </div>}
     </main>
   )

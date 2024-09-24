@@ -19,7 +19,7 @@ const allowedOrigins = ['https://muta-engine-frontend.vercel.app', 'http://local
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({credentials: true, origin: allowedOrigins}));
+app.use(cors({ credentials: true, origin: allowedOrigins }));
 const port = process.env.PORT || 3000;
 const URI = process.env.MONGODB_URI;
 const salt = bcrypt.genSaltSync(10);
@@ -66,7 +66,10 @@ app.post('/signup', verifyCaptcha, async (req, res) => {
         })
 
         const token = generateToken(user);
-        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' });
+        res.status(201).cookie('token', token).json({
+            'message': 'Token Generated',
+            'token': token
+        });
     } catch (error) {
         res.status(500).json({ 'message': error.message });
     } finally {
@@ -98,12 +101,10 @@ app.post('/login', async (req, res) => {
 
             const token = generateToken(user);
             console.log(token);
-            res.status(201).cookie('token', token, {
-                httpOnly: false,
-                secure: process.env.NODE_ENV === 'production',  // true for HTTPS
-                sameSite: 'None',  // Required for cross-origin requests
-                maxAge: 24 * 60 * 60 * 1000,  // 1 day
-              }).json({ 'message': 'Token Generated' })
+            res.status(201).cookie('token', token).json({
+                'message': 'Token Generated',
+                'token': token
+            })
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message })
@@ -212,17 +213,12 @@ app.post('/google-login', async (req, res) => {
             });
         }
 
-        const token = generateToken(user);
-        res.status(201).cookie('token', token).json({ 'message': 'Token Generated' })
-
-        res.json({
-            token,
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            }
+        const JWTtoken = generateToken(user);
+        res.status(201).cookie('token', token).json({ 
+            'message': 'Token Generated' ,
+            'token' : JWTtoken
         });
+
     } catch (error) {
         res.status(500).json({ error: "Error logging in with Google" });
     }
@@ -232,18 +228,18 @@ app.post('/google-login', async (req, res) => {
 // Placing order using Razorpay payment gateway
 app.post('/create-order', async (req, res) => {
     const { amount, currency } = req.body;
-  
+
     const options = {
-      amount: amount * 100,
-      currency: currency || 'INR',
-      receipt: `receipt_${Date.now()}`,
+        amount: amount * 100,
+        currency: currency || 'INR',
+        receipt: `receipt_${Date.now()}`,
     };
-  
+
     try {
-      const order = await razorpay.orders.create(options);
-      res.json({ orderId: order.id });
+        const order = await razorpay.orders.create(options);
+        res.json({ orderId: order.id });
     } catch (error) {
-      res.status(500).json({ error: 'Something went wrong' });
+        res.status(500).json({ error: 'Something went wrong' });
     }
 });
 
@@ -251,20 +247,20 @@ app.post('/create-order', async (req, res) => {
 // Verifying Payment API before invoice generation
 app.post('/verify-payment', (req, res) => {
     const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
-  
+
     const secret = process.env.PAYMENT_KEY_SECRET;
     const shasum = crypto.createHmac('sha256', secret);
-  
+
     shasum.update(razorpayOrderId + '|' + razorpayPaymentId);
     const digest = shasum.digest('hex');
-  
+
     if (digest === razorpaySignature) {
-      res.json({ success: true });
+        res.json({ success: true });
     } else {
-      res.json({ success: false });
+        res.json({ success: false });
     }
-  });
-  
+});
+
 
 
 app.listen(port, () => {

@@ -4,22 +4,23 @@ import Signup from "./pages/Signup"
 import HomePage from "./pages/HomePage"
 import ForgotPass from "./pages/ForgotPass"
 import ResetPass from "./pages/ResetPass"
-import PaymentButton from "./pages/PaymentPage"
+import { useState } from "react"
 
 function App() {
+  const [token, setToken] = useState('');
 
   return (
     <Routes>
       <Route path={'/login'} element={
-        <Login />
+        <Login setToken={setToken}/>
       } />
 
       <Route path={'/signup'} element={
-        <Signup />
+        <Signup setToken={setToken}/>
       } />
 
       <Route index element={
-        <HomePage />
+        <HomePage token={token}/>
       } />
 
       <Route path={'/forgot-password'} element={
@@ -28,10 +29,6 @@ function App() {
 
       <Route path={'/reset-password/:email'} element={
         <ResetPass />
-      } />
-
-      <Route path={'/payment'} element={
-        <PaymentButton />
       } />
     </Routes>
   )

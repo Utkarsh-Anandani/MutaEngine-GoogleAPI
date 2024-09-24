@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { Navigate } from "react-router-dom";
 
-const GoogleLoginComponent = () => {
+const GoogleLoginComponent = ({setToken}) => {
+
+  const [redirect, setredirect] = useState(false);
+
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const res = await fetch('https://muta-engine-google-api-backend.vercel.app/google-login', {
@@ -16,7 +20,9 @@ const GoogleLoginComponent = () => {
       const data = await res.json();
 
       if (res.ok) {
-        console.log("User saved to MongoDB:", data);
+        setToken(data.token);
+        console.log("User saved to MongoDB:", data.message);
+        setredirect(true);
       } else {
         console.error("Error during login:", data.error);
       }
@@ -24,6 +30,11 @@ const GoogleLoginComponent = () => {
       console.error("Request failed:", error);
     }
   };
+
+
+  if(redirect) {
+    return <Navigate to={'/'}/>
+  }
 
   return (
     <GoogleOAuthProvider clientId="690137169343-ags8105pdld6tpdstq6mg278tmh880jd.apps.googleusercontent.com">
