@@ -203,14 +203,17 @@ app.post('/google-login', async (req, res) => {
         const { sub, name, email } = ticket.getPayload();
 
         let user = await User.findOne({ googleId: sub });
+        let emailUser = await User.findOne({email: email});
 
-        if (!user) {
+        if (!user && !emailUser) {
             user = await User.create({
                 googleId: sub,
                 username: name,
                 email: email,
                 password: await bcrypt.hash('defaultPassword', 10) // Default password
             });
+        } else {
+            res.status(400).json({'message' : 'Email already exists'})
         }
 
         const JWTtoken = generateToken(user);
